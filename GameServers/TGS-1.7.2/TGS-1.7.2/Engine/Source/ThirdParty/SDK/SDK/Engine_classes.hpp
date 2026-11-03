@@ -3928,7 +3928,12 @@ public:
 
 public:
 	static class UEngine* GetEngine();
-
+public:
+	UNetDriver* CreateNetDriver(class UWorld* InWorld, FName NetDriverDefinition)
+	{
+		static UNetDriver* (*CreateNetDriverInternal)(UEngine*, class UWorld*, FName) = decltype(CreateNetDriverInternal)(InSDKUtils::GetImageBase() + 0x244D040);
+		return CreateNetDriverInternal(this, InWorld, NetDriverDefinition);
+	}
 public:
 	static class UClass* StaticClass()
 	{
