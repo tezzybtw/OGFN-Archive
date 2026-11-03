@@ -17205,7 +17205,18 @@ public:
 	uint8                                         Pad_F0[0x8];                                       // 0x00F0(0x0008)(Fixing Size After Last Property [ Dumper-8 ])
 	float                                         Time;                                              // 0x00F8(0x0004)(ZeroConstructor, IsPlainOldData, NoDestructor, HasGetValueTypeHash, NativeAccessSpecifierPublic)
 	uint8                                         Pad_FC[0x314];                                     // 0x00FC(0x0314)(Fixing Struct Size After Last Property [ Dumper-8 ])
+public:
+	bool InitListen(void* InNotify, FURL& ListenURL, bool bReuseAddressAndPort, FString& Error)
+	{
+		static bool (*InitListenInternal)(UNetDriver*, void*, FURL&, bool, FString&) = decltype(InitListenInternal)(InSDKUtils::GetImageBase() + 0x391E3E0);
+		return InitListenInternal(this, InNotify, ListenURL, bReuseAddressAndPort, Error);
+	}
 
+	void SetWorld(UWorld* InWorld)
+	{
+		static void (*SetWorldInternal)(UNetDriver*, UWorld*) = decltype(SetWorldInternal)(InSDKUtils::GetImageBase() + 0x223C500);
+		SetWorldInternal(this, InWorld);
+	}
 public:
 	static class UClass* StaticClass()
 	{
