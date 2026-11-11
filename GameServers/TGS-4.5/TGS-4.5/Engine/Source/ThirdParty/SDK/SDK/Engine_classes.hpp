@@ -2540,7 +2540,18 @@ public:
 	uint8                                         Pad_164[0x3B4];                                    // 0x0164(0x03B4)(Fixing Size After Last Property [ Dumper-8 ])
 	class UReplicationDriver*                     ReplicationDriver;                                 // 0x0518(0x0008)(ZeroConstructor, Transient, IsPlainOldData, NoDestructor, HasGetValueTypeHash, NativeAccessSpecifierPrivate)
 	uint8                                         Pad_520[0x18];                                     // 0x0520(0x0018)(Fixing Struct Size After Last Property [ Dumper-8 ])
+public:
+	bool InitListen(void* InNotify, FURL& ListenURL, bool bReuseAddressAndPort, FString& Error)
+	{
+		static bool (*InitListenInternal)(UNetDriver*, void*, FURL&, bool, FString&) = decltype(InitListenInternal)(InSDKUtils::GetImageBase() + 0x39DE90);
+		return InitListenInternal(this, InNotify, ListenURL, bReuseAddressAndPort, Error);
+	}
 
+	void SetWorld(UWorld* InWorld)
+	{
+		static void (*SetWorldInternal)(UNetDriver*, UWorld*) = decltype(SetWorldInternal)(InSDKUtils::GetImageBase() + 0x2298C60);
+		SetWorldInternal(this, InWorld);
+	}
 public:
 	static class UClass* StaticClass()
 	{
@@ -4518,7 +4529,12 @@ class UReplicationDriver : public UObject
 {
 public:
 	TSoftClassPtr<class UClass>                   DefaultReplicationDriverClass;                     // 0x0028(0x0028)(Config, UObjectWrapper, HasGetValueTypeHash, NativeAccessSpecifierPublic)
-
+public:
+	void ServerReplicateActors(float DeltaTime)
+	{
+		static void (*ServerReplicateActorsInternal)(UReplicationDriver*, float) = decltype(ServerReplicateActorsInternal)(InSDKUtils::GetImageBase() + 0xF1F690);
+		ServerReplicateActorsInternal(this, DeltaTime);
+	}
 public:
 	static class UClass* StaticClass()
 	{
