@@ -8078,6 +8078,19 @@ class UEngine* UEngine::GetEngine()
 	return GEngine; 
 }
 
+class UNetDriver* UEngine::FindNamedNetDriver(class UWorld* InWorld, FName NetDriverName)
+{
+	FWorldContext* WorldContextFromWorldChecked = GetWorldContextFromWorldChecked(InWorld);
+	if (!WorldContextFromWorldChecked) return nullptr;
+
+	TArray<FNamedNetDriver>& ActiveNetDrivers = WorldContextFromWorldChecked->ActiveNetDrivers;
+	if (!ActiveNetDrivers.IsValid()) return nullptr;
+
+	for (const FNamedNetDriver& ActiveNetDriver : ActiveNetDrivers) { if (auto NetDriver = ActiveNetDriver.NetDriver; NetDriver != nullptr && NetDriver->NetDriverName == NetDriverName) return NetDriver; }
+
+	return nullptr;
+}
+
 
 // Function Engine.Actor.AddComponent
 // (Final, Native, Public, HasOutParams, HasDefaults, BlueprintCallable)

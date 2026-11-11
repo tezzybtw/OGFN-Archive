@@ -939,7 +939,26 @@ public:
 
 public:
 	static class UEngine* GetEngine();
+public:
+	void BroadcastNetworkFailure(class UWorld* World, UNetDriver* NetDriver, ENetworkFailure FailureType, const FString ErrorString = TEXT(""))
+	{
+		static void (*BroadcastNetworkFailureInternal)(UEngine*, class UWorld*, UNetDriver*, ENetworkFailure, const FString) = decltype(BroadcastNetworkFailureInternal)(InSDKUtils::GetImageBase() + 0x38EC00);
+		BroadcastNetworkFailureInternal(this, World, NetDriver, FailureType, ErrorString);
+	}
 
+	UNetDriver* CreateNamedNetDriver(class UWorld* InWorld, FName NetDriverName)
+	{
+		static UNetDriver* (*CreateNamedNetDriverInternal)(UEngine*, class UWorld*, FName) = decltype(CreateNamedNetDriverInternal)(InSDKUtils::GetImageBase() + 0x24E2F50);
+		return CreateNamedNetDriverInternal(this, InWorld, NetDriverName);
+	}
+
+	FWorldContext* GetWorldContextFromWorldChecked(const class UWorld* InWorld)
+	{
+		static FWorldContext* (*GetWorldContextFromWorldCheckedInternal)(UEngine*, const class UWorld*) = decltype(GetWorldContextFromWorldCheckedInternal)(InSDKUtils::GetImageBase() + 0x24EC240);
+		return GetWorldContextFromWorldCheckedInternal(this, InWorld);
+	}
+
+	UNetDriver* FindNamedNetDriver(class UWorld* InWorld, FName NetDriverName);
 public:
 	static class UClass* StaticClass()
 	{
